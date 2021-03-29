@@ -108,12 +108,12 @@ data_type Stack::pop()
 
 }
 
-void Stack:: dump()
+void Stack::dump()
 {
 	assert(this && "You passed nullptr to dump");
 
     // char* sec_lvl = define_lvl();
-
+    printf("In dump\n");
     char mass[67] = "******************************************************************";
 
     FILE* res = fopen("log_stack.txt", "ab");
@@ -123,10 +123,13 @@ void Stack:: dump()
 	using namespace my_errors;
 
     if(error_state_)
+    {
+        printf("error_state_ = %d\n", error_state_);
 		for(int i = 0; i < NUMBER_OF_ERRORS; i++)
 			if(get_byte(error_state_, i + 1))
 				fprintf(res, "Stack (ERROR #%d : %s) [%p]. \n",
 				error_state_, error_print(i + 1), this);
+    }
     else
     {
         fprintf(res, "Stack(OK) [%p]. \"%s\"\n", this, name_);
@@ -287,15 +290,15 @@ int Stack::calc_hash()
 
     for(int i = 0; i < cur_size_; i++)
     {
-        Hash += (int) (N * ((double)(A * ((int) (data_[i]) | (int) (data_[i - 1]))) - (int) (A * ((int) (data_[i]) | (int) (data_[i - 1]))))) + (int) (data_[i]) ^ (int) 
+        Hash += (int) (N * ((double)(A * ((int) (data_[i]) | (int) (data_[i - 1]))) - (int) (A * ((int) (data_[i]) | (int) (data_[i - 1]))))) + (int) (data_[i]) ^ (int)
         (data_[i - 1]) - (int) (data_[i]) & (int) (data_[i - 1]);
-        Hash += capacity;
+        Hash += capacity_;
         //Hash += ((int)(Stack->data));
-        Hash += *(Stack->name + strlen(Stack->name) % 2);//>> i % 2;
+        Hash += *(name_ + strlen(name_) % 2);//>> i % 2;
     }
 
     Hash += abs((canary_left_ >> 2));
-    Hash += abs((capacity_ * canary_right_) >> 2);
+    Hash += (capacity_ * canary_right_) >> 2;
 
     hash_ = Hash;
     return Hash;
