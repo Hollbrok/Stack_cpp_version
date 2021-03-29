@@ -1,9 +1,6 @@
 #include "stack.h"
 
-int ERROR_STATE                  = 0;
-int DOUBLE_CONSTRUCT             = 0;
-char* addres                     = "log_stack.txt";
-
+static int ERROR_STATE_STACK = 0;
 Stack::Stack(const char *name, size_t capacity) :
 	canary_left_(static_cast<int> ( CANARY_L_STACK )),
 	data_(nullptr),
@@ -137,17 +134,17 @@ void Stack::dump()
         // fprintf(res, "Security lvl is %s\n", sec_lvl);
         // fprintf(res, "Type of data is %s\n", type_string);
         fprintf(res, "Hash        = %d\n", hash_);
-        fprintf(res, "size        = %d\n", cur_size_);
-        fprintf(res, "capacity    = %d\n", capacity_);
-        int cap = capacity_;
-        int cur = cur_size_;
+        fprintf(res, "size        = %Iu\n", cur_size_);
+        fprintf(res, "capacity    = %Iu\n", capacity_);
+        size_t cap = capacity_;
+        size_t cur = cur_size_;
 
         for(int i = 0; i < cap; i++)
         {
             if(i < cur)
-                fprintf(res, "*[%d] data   = %d\n", i, data_[i]);
+                fprintf(res, "*[%d] data   = %lg\n", i, data_[i]);
             else
-                fprintf(res, "*[%d] data   = %d (POISON)\n", i, POISON);
+                fprintf(res, "*[%d] data   = %lg (POISON)\n", i, POISON);
         }
     }
 
@@ -165,7 +162,7 @@ int Stack::verify()
 
     using namespace my_errors;
 
-    if(ERROR_STATE == MAX_CAPACITY_ERROR)
+    if(ERROR_STATE_STACK == MAX_CAPACITY_ERROR)
     {
 		error_state_ += MAX_CAPACITY_ERROR;
         return MAX_CAPACITY_ERROR;
@@ -234,32 +231,45 @@ int Stack::verify()
 
 char* Stack::error_print(int bit_of_error)
 {
+    char error_message[100] = {};
     switch(bit_of_error)
     {
         case 1:
-            return "NULL STACK PTR";
+            strcpy(error_message, "NULL STACK PTR"); //error_message = "NULL STACK PTR";
+            break;
         case 2:
-            return "NULL DATA PTR";
+            strcpy(error_message, "NULL DATA PTR");
+            break;
         case 3:
-            return "CUR BIGGER THAN CAPACITY";
+            strcpy(error_message, "CUR BIGGER THAN CAPACITY");
+            break;
         case 4:
-            return "CUR LESS THAN ZERO";
+            strcpy(error_message, "CUR LESS THAN ZERO");
+            break;
         case 5:
-            return "CAPACITY LESS THAN ZERO";;
+            strcpy(error_message, "CAPACITY LESS THAN ZERO");
+            break;
         case 6:
-            return "DOUBLE CONSTRUCT";
+            strcpy(error_message, "DOUBLE CONSTRUCT");
+            break;
         case 7:
-            return "ERROR_DATA_LEFT";
+            strcpy(error_message, "ERROR_DATA_LEFT");
+            break;
         case 8:
-            return "ERROR_DATA_RIGHT";
+            strcpy(error_message, "ERROR_DATA_RIGHT");
+            break;
 		case 9:
-            return "Somebody is trying to hack a stack";
+            strcpy(error_message, "Somebody is trying to hack a stack");
+            break;
         case 10:
-            return "MAX_CAPACITY_ERROR";
+            strcpy(error_message, "MAX_CAPACITY_ERROR");
+            break;
         default:
-            return "UNKNOWN ERROR IN error_print()\n";
+            strcpy(error_message, "UNKNOWN ERROR IN error_print()\n");
+            break;
 
     }
+    return error_message;
 }
 
 int Stack::calc_hash()
@@ -291,7 +301,7 @@ int Stack::calc_hash()
     for(int i = 0; i < cur_size_; i++)
     {
         Hash += (int) (N * ((double)(A * ((int) (data_[i]) | (int) (data_[i - 1]))) - (int) (A * ((int) (data_[i]) | (int) (data_[i - 1]))))) + (int) (data_[i]) ^ (int)
-        (data_[i - 1]) - (int) (data_[i]) & (int) (data_[i - 1]);
+        (data_[i - 1]) - ((int) (data_[i]) & (int) (data_[i - 1]));
         Hash += capacity_;
         //Hash += ((int)(Stack->data));
         Hash += *(name_ + strlen(name_) % 2);//>> i % 2;

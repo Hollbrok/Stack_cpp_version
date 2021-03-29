@@ -1,11 +1,11 @@
 #ifndef STACK_CONFIG_H_INCLUDED
 #define STACK_CONFIG_H_INCLUDED
 
-using data_type = int;
+using data_type = double;
 
-constexpr int REAL_MULTIPLIER	= 2;
-constexpr int REAL_REDUCER   	= 2 * REAL_MULTIPLIER;
-constexpr int REAL_ADDER     	= 4;
+// constexpr int REAL_MULTIPLIER	= 2;
+// constexpr int REAL_REDUCER   	= 2 * REAL_MULTIPLIER;
+// constexpr int REAL_ADDER     	= 4;
 
 constexpr int CANARY_L_STACK           	= 0x1A3C3D7C;
 constexpr int CANARY_R_STACK       		= 0xADF44A23;

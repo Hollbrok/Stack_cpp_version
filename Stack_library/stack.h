@@ -14,38 +14,7 @@
 #include <conio.h>
 #include "stack_config.h"
 
-//using data_type = int;
-
-#define ASSERT_OK                                    \
-    if (stack_verify(Stack))                         \
-    {                                                \
-        stack_dump(Stack);                           \
-        return;                                      \
-    }
-
-#define Construct(a,b)                               \
-        name = #a;                                   \
-        name++;                                      \
-        stack_construct(a, b, name);
-
-#define ASSERT_POP_OK                                   \
-    if (stack_verify(Stack))                            \
-    {                                                   \
-        stack_dump(Stack);                              \
-        return POISON;                                  \
-    }
-
-#define CHECK_CAP                                       \
-    if( ((FORMAT != "s") && (FORMAT != "c")             \
-       && (push_num >= POISON)                          \
-       || fpclassify(push_num) != FP_NORMAL))           \
-        {                                               \
-            stack_dump(Stack);                          \
-                                                        \
-            return;                                     \
-        }
-
-
+//using data_type = double;
 
 class Stack
 {
@@ -73,6 +42,19 @@ public:
 
 void push(data_type push_num);
 data_type  pop();
+
+//! GETTERS
+
+size_t get_cur_size() {return cur_size_;};
+size_t get_capacity() {return capacity_;};
+data_type get_data_num(size_t number) {return data_[number];};
+int		  get_error_state() {return error_state_;};
+const char*	  get_name() {return name_;};
+
+//! SETTERS
+// * They should not be (you can only use push, pop)
+//! OTHER
+
 void dump();
 
 
