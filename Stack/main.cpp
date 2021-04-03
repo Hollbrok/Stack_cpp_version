@@ -5,21 +5,18 @@ int main()
 
     setlocale(LC_ALL, "russian");
 
-    FILE* res = fopen("log_stack.txt", "w");
-    fclose(res);
-    //char* name = nullptr;
-    printf("before construct\n");
-    Stack stk1("first stack", 10);
-    printf("after construct\n");
-    stk1.push(19);
-    stk1.push(1111);
-    printf("after push\n");
-    stk1.pop();
-    printf("after pop\n");
+	Stack stk1("first stack", 10);
+
+    for(int i = 0; i < 20; i++)
+        stk1.push(i);
     stk1.dump();
-    printf("after dump\n");
-    printf("Enter F to leave..\n");
-    getch();
+
+	for(int i = 0; i < 16; i++)
+        stk1.pop();
+    stk1.dump();
+
+	printf("Press any button to continue.. ");
+	getch();
 
     return 0;
 }
