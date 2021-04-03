@@ -1,0 +1,1 @@
+# This project is just a C++ version of my other project [Stack](https://github.com/Hollbrok/Stack)
