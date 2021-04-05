@@ -19,6 +19,14 @@ int main()
         stk1.pop();
     stk1.dump();
 
+    //printf("%lg\n", stk1[0]);
+    //printf("%lg\n", stk1[1]);
+    //stk1[0] = 2;
+    //printf("%lg\n", stk1[0]);
+
+    stk1.dump();
+
+
 	printf("Press any button to continue.. ");
 	getch();
 
