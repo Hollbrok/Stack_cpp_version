@@ -65,13 +65,13 @@ public:
 
 //! SETTERS
 
-    const data_type& operator[] (int num) const;
-
+    //const data_type& operator[] (int num) const;
+	data_type& operator[] (int num);
 
 //! GETTERS
 
-	//const data_type& operator[] (int number) const;
-	data_type& operator[] (int num);
+	const data_type& operator[] (int number) const;
+	//data_type& operator[] (int num);
 
     //data_type get_data_num(int index) const { assert(0 <= index && index < cur_size_); return data_[index];};
     int get_cur_size() const {return cur_size_;};
